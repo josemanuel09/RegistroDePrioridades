@@ -1,7 +1,66 @@
 ﻿@page "/RegistroDePrioridades"
 @inject PrioridadesBLL prioridadesBLL
+@rendermode InteractiveServer
 
-<h3>R_Prioridades</h3>
+
+<PageTitle>Registro de Prioridades</PageTitle>
+
+<EditForm Model="Prioridad" OnValidSubmit="Guardar" FormName="prioridadForm">
+    <DataAnnotationsValidator />
+
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h3>Registro de Prioridades</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                        <label for="PrioridadId">Prioridad Id:</label>
+                        <div class="id-input">
+                            <InputNumber @bind-Value="Prioridad.PrioridadId" class="id-input" aria-describedby="BotonBuscar" />
+                            <button @onclick="Buscar" class="btn btn-primary" type="button" id="BotonBuscar">
+                                <i class="bi bi-search "></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="Descripcion">Descripción:</label>
+                    <InputText @bind-Value="Prioridad.Descripcion" class="form-control" />
+                    <ValidationMessage For="@(() => Prioridad.Descripcion)" />
+                </div>
+                @if (Existe)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Ya existe una prioridad con esa descripción
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label class="form-label" for="DiasCompromiso">Días Compromiso:</label>
+                    <InputNumber @bind-Value="Prioridad.DiasCompromiso" class="form-control" />
+                    <ValidationMessage For="@(() => Prioridad.DiasCompromiso)" />
+                </div>
+            </div>
+
+            <div class="card-footer ">
+
+                <button type="button" class="btn btn-primary" @onclick="Nuevo">
+                    Nuevo <i class="bi bi-file-earmark-plus-fill" />
+                </button>
+                <button type="submit" class="btn btn-success">
+                    Guardar <i class="bi bi-floppy2" />
+                </button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">
+                    Eliminar <i class="bi bi-archive-fill" />
+                </button>
+
+            </div>
+        </div>
+    </div>
+</EditForm>
 
 @code {
     public Prioridades Prioridad { get; set; } = new Prioridades();
