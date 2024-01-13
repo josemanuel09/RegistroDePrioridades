@@ -1,4 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using RegistroDePrioridades.BLL;
 using RegistroDePrioridades.Components;
+using RegistroDePrioridades.DAL;
 
 namespace RegistroDePrioridades
 {
@@ -7,6 +10,10 @@ namespace RegistroDePrioridades
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            //Inyectamos el contexto y la Bll
+            var ConStr = builder.Configuration.GetConnectionString("ConStr");
+            builder.Services.AddDbContext<Contexto>(options => options.UseSqlite(ConStr));
+            builder.Services.AddScoped<PrioridadesBLL>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
