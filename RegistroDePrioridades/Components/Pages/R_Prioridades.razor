@@ -1,0 +1,56 @@
+﻿@page "/RegistroDePrioridades"
+@inject PrioridadesBLL prioridadesBLL
+
+<h3>R_Prioridades</h3>
+
+@code {
+    public Prioridades Prioridad { get; set; } = new Prioridades();
+    public string Mensaje { get; set; } = string.Empty;
+    public bool Existe { get; set; } = false;
+
+    public async Task Buscar()
+    {
+        var encontrado = await prioridadesBLL.Buscar(Prioridad.PrioridadId);
+        if (encontrado != null)
+            Prioridad = encontrado;
+        else
+            Mensaje = "No se encontró la prioridad";
+        
+    }
+
+    public void Guardar()
+    {
+        if (Validar())
+            return;
+
+        var guardo = prioridadesBLL.Guardar(this.Prioridad);
+        Nuevo();
+
+    }
+
+    public void Nuevo()
+    {
+        this.Prioridad = new Prioridades();
+        Mensaje = string.Empty;
+    }
+
+    public bool Validar()
+    {
+        Existe = (prioridadesBLL.Listar(pr => pr.Descripcion!.ToLower() == Prioridad.Descripcion!.ToLower() && pr.PrioridadId != Prioridad.PrioridadId).Any());
+        return Existe;
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = prioridadesBLL.Eliminar(Prioridad.PrioridadId);
+        if (eliminado)
+        {
+            Mensaje = "Se eliminó correctamente";
+            Nuevo();
+        }
+        else
+            Mensaje = "No se pudo eliminar la prioridad";
+        
+    }
+
+}

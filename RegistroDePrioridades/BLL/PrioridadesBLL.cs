@@ -53,7 +53,10 @@ namespace RegistroDePrioridades.BLL
             return _contexto.SaveChanges() > 0;
         }
 
-        
+        public List<Prioridades> Listar(Expression<Func<Prioridades, bool>> criterio)
+        {
+            return _contexto.Prioridades.Where(criterio).AsNoTracking().ToList();
+        }
 
     }
 }
