@@ -2,12 +2,9 @@
 @inject PrioridadesBLL prioridadesBLL
 @rendermode InteractiveServer
 
-
 <PageTitle>Registro de Prioridades</PageTitle>
-
 <EditForm Model="Prioridad" OnValidSubmit="Guardar" FormName="prioridadForm">
     <DataAnnotationsValidator />
-
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-header">
@@ -25,7 +22,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label" for="Descripcion">Descripci&oacute;n:</label>
                     <InputText @bind-Value="Prioridad.Descripcion" class="form-control" />
@@ -37,14 +33,24 @@
                         Ya existe una prioridad con esa descripción
                     </div>
                 }
-
                 <div class="mb-3">
                     <label class="form-label" for="DiasCompromiso">D&iacute;as Compromiso:</label>
                     <InputNumber @bind-Value="Prioridad.DiasCompromiso" class="form-control" />
                     <ValidationMessage For="@(() => Prioridad.DiasCompromiso)" />
                 </div>
+                @if (Guardo)
+                {
+                    <p class="text-success" >
+                        La prioridad se guardó exitosamente
+                    </p>
+                }
+                @if (Elimino)
+                {
+                    <p class="text-success" >
+                        La prioridad se eliminó exitosamente
+                    </p>
+                }
             </div>
-
             <div class="card-footer ">
 
                 <button type="button" class="btn btn-primary" @onclick="Nuevo">
@@ -66,6 +72,8 @@
     public Prioridades Prioridad { get; set; } = new Prioridades();
     public string Mensaje { get; set; } = string.Empty;
     public bool Existe { get; set; } = false;
+    public bool Guardo { get; set; } = false;
+    public bool Elimino { get; set; } = false;
 
     public async Task Buscar()
     {
@@ -74,42 +82,31 @@
             Prioridad = encontrado;
         else
             Mensaje = "No se encontró la prioridad";
-        
     }
-
     public void Guardar()
     {
         if (Validar())
             return;
 
         var guardo = prioridadesBLL.Guardar(this.Prioridad);
+        Guardo = true;
         Nuevo();
 
     }
-
     public void Nuevo()
     {
         this.Prioridad = new Prioridades();
         Mensaje = string.Empty;
     }
-
     public bool Validar()
     {
         Existe = (prioridadesBLL.Listar(pr => pr.Descripcion!.ToLower() == Prioridad.Descripcion!.ToLower() && pr.PrioridadId != Prioridad.PrioridadId).Any());
         return Existe;
     }
-
     public async Task Eliminar()
     {
         var eliminado = prioridadesBLL.Eliminar(Prioridad.PrioridadId);
-        if (eliminado)
-        {
-            Mensaje = "Se eliminó correctamente";
-            Nuevo();
-        }
-        else
-            Mensaje = "No se pudo eliminar la prioridad";
-        
+        Elimino = true;
+        Nuevo();
     }
-
 }

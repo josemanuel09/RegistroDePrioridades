@@ -26,7 +26,6 @@ namespace RegistroDePrioridades.BLL
             else
                 return this.Modificar(Prioridades);
         }
-
         public bool Eliminar(int id)
         {
             var prioridades = _contexto.Prioridades.Find(id);
@@ -34,7 +33,6 @@ namespace RegistroDePrioridades.BLL
             var deleted = _contexto.SaveChanges() > 0;
             return deleted;
         }
-
         public async Task<Prioridades?> Buscar(int id)
         {
             return await _contexto.Prioridades.FindAsync(id);
@@ -44,7 +42,6 @@ namespace RegistroDePrioridades.BLL
             _contexto.Prioridades.Add(Prioridades);
             return _contexto.SaveChanges() > 0;
         }
-
         public bool Modificar(Prioridades Prioridades)
         {
             var p = _contexto.Prioridades.Find(Prioridades.PrioridadId);
@@ -52,11 +49,9 @@ namespace RegistroDePrioridades.BLL
             _contexto.Entry(Prioridades).State = EntityState.Modified;
             return _contexto.SaveChanges() > 0;
         }
-
         public List<Prioridades> Listar(Expression<Func<Prioridades, bool>> criterio)
         {
             return _contexto.Prioridades.Where(criterio).AsNoTracking().ToList();
         }
-
     }
 }
