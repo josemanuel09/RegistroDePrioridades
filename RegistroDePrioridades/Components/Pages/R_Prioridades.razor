@@ -62,6 +62,7 @@
                 <button type="button" class="btn btn-danger" @onclick="Eliminar">
                     Eliminar <i class="bi bi-archive-fill" />
                 </button>
+               
 
             </div>
         </div>
@@ -74,14 +75,15 @@
     public bool Existe { get; set; } = false;
     public bool Guardo { get; set; } = false;
     public bool Elimino { get; set; } = false;
+    public bool Encontro { get; set; } = false;
 
     public async Task Buscar()
     {
         var encontrado = await prioridadesBLL.Buscar(Prioridad.PrioridadId);
         if (encontrado != null)
             Prioridad = encontrado;
-        else
-            Mensaje = "No se encontró la prioridad";
+
+        Encontro = true;
     }
     public void Guardar()
     {
