@@ -12,7 +12,7 @@ namespace RegistroDePrioridades
             var builder = WebApplication.CreateBuilder(args);
             //Inyectamos el contexto y la Bll
             var ConStr = builder.Configuration.GetConnectionString("ConStr");
-            builder.Services.AddDbContext<Contexto>(options => options.UseSqlite(ConStr));
+            builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlite(ConStr), ServiceLifetime.Scoped);
             builder.Services.AddScoped<PrioridadesBLL>();
 
             // Add services to the container.
@@ -24,7 +24,7 @@ namespace RegistroDePrioridades
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Error", createScopeForErrors: true);
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
