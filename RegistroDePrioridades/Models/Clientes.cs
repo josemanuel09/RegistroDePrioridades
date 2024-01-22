@@ -22,7 +22,7 @@ namespace RegistroDePrioridades.Models
         [StringLength(30, ErrorMessage = "No Puede Exceder los 30 Caracteres")]
         [EmailAddress(ErrorMessage = "El formato del email no es Valido")]
         [ArrobaValidation(ErrorMessage = "El Email Debe Contener @")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
         [Required(ErrorMessage = "El campo Direccion es Obligatoeio")]
         [StringLength(50, ErrorMessage = "No Puede Exceder los 50 Caracteres")]
         public string? Direccion { get; set; }
