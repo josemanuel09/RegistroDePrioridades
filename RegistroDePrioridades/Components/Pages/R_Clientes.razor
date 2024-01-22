@@ -48,7 +48,7 @@
             </div>
 
             <div class="col-md-6">
-                <label>Direccion:</label>
+                <label>Direcci&oacute;n:</label>
                 <InputText @bind-Value="cliente.Direccion" class="form-control"></InputText>
                 <ValidationMessage For="@(() => cliente.Direccion)" />
             </div>
@@ -70,7 +70,7 @@
         </div>
         <div class="card-footer">
             <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo <i class="bi bi-file-earmark-plus-fill" /></button>
-            <button type="button" class="btn btn-success" @onclick="Guardar">
+            <button  type="submit" class="btn btn-success" >
                 Guardar <i class="bi bi-archive-fill" />
             </button>
             <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar <i class="bi bi-archive-fill" /></button>
@@ -117,6 +117,7 @@
     }
     public void Guardar()
     {
+
         if (Validar())
             return;
 
