@@ -70,12 +70,16 @@
         </div>
         <div class="card-footer">
             <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo <i class="bi bi-file-earmark-plus-fill" /></button>
-            <button class="btn btn-success">Guardar <i class="bi bi-floppy2" /></button>
+            <button type="button" class="btn btn-success" @onclick="Guardar">
+                Guardar <i class="bi bi-archive-fill" />
+            </button>
             <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar <i class="bi bi-archive-fill" /></button>
         </div>
         @if (Eliminado)
         {
             <p class="text-success">Se elimino el cliente correctamente</p>
+
+
         }
 
         @if (Guardado)
