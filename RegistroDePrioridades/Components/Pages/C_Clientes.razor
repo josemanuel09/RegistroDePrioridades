@@ -12,7 +12,10 @@
                     <button type="button" class="btn btn-primary bi bi-search" @onclick="Buscar">Buscar</button>
                     <button type="button" class="btn btn-primary bi bi-arrow-clockwise" @onclick="Nuevo"></button>
                 </div>
+               
             </div>
+            
+
         </div>
     </div>
 
@@ -51,10 +54,19 @@
     public Clientes cliente { get; set; } = new Clientes();
     public int filtro { get; set; }
     public List<Clientes> Lista_De_Clientes { get; set; } = new List<Clientes>();
+    public bool Encontrado { get; set; } = false;
 
     public void Buscar()
     {
         Lista_De_Clientes = clientesBLL.Listar(lc => lc.ClienteId == filtro);
+        if (Lista_De_Clientes.Count == 0)
+        {
+            Encontrado = true;
+        }
+        else
+        {
+            Encontrado = false;
+        }
     }
 
     public void Nuevo()
