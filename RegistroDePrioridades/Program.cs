@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RegistroDePrioridades.BLL;
+using RegistroDePrioridades.Services;
 using RegistroDePrioridades.Components;
 using RegistroDePrioridades.DAL;
 
