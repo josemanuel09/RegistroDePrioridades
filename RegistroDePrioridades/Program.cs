@@ -13,8 +13,8 @@ namespace RegistroDePrioridades
             //Inyectamos el contexto y la Bll
             var ConStr = builder.Configuration.GetConnectionString("ConStr");
             builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlite(ConStr), ServiceLifetime.Scoped);
-            builder.Services.AddScoped<PrioridadesBLL>();
-            builder.Services.AddScoped<ClientesBLL>();
+            builder.Services.AddScoped<PrioridadesService>();
+            builder.Services.AddScoped<ClientesService>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()

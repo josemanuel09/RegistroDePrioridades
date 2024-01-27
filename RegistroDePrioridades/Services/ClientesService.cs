@@ -4,12 +4,12 @@ using RegistroDePrioridades.Models;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace RegistroDePrioridades.BLL
+namespace RegistroDePrioridades.Services
 {
-    public class ClientesBLL
+    public class ClientesService
     {
         private readonly Contexto _contexto;
-        public ClientesBLL(Contexto contexto)
+        public ClientesService(Contexto contexto)
         {
             _contexto = contexto;
         }

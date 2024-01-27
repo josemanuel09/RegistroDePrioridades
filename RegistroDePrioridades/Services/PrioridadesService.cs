@@ -3,12 +3,12 @@ using RegistroDePrioridades.DAL;
 using RegistroDePrioridades.Models;
 using System.Linq.Expressions;
 
-namespace RegistroDePrioridades.BLL
+namespace RegistroDePrioridades.Services
 {
-    public class PrioridadesBLL
+    public class PrioridadesService
     {
         private readonly Contexto _context;
-        public PrioridadesBLL(Contexto contexto)
+        public PrioridadesService(Contexto contexto)
         {
             _context = contexto;
         }
