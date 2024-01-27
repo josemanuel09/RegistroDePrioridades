@@ -15,6 +15,7 @@ namespace RegistroDePrioridades
             builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlite(ConStr), ServiceLifetime.Scoped);
             builder.Services.AddScoped<PrioridadesService>();
             builder.Services.AddScoped<ClientesService>();
+            builder.Services.AddScoped<TicketsService>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
