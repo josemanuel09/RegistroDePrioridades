@@ -22,7 +22,12 @@
                 <dd class="col-sm-9">@Prioridad.Result?.DiasCompromiso</dd>
             </dl>
             <button type="button"class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <a href="/details" class="btn btn-link">Volver a Consulta</a>
+
         </div>
+        
+
+
     </div>
 }
 else
@@ -30,7 +35,6 @@ else
     <p class="alert alert-danger">No se encontró la prioridad.</p>
 }
 
-<a href="/ConsultaDePrioridades" class="btn btn-link">Volver a Consulta</a>
 
 @code {
     [Parameter]
