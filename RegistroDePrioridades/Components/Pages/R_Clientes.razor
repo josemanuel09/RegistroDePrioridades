@@ -85,6 +85,7 @@
             <p class="text-success">Se guardo el cliente correctamente</p>
         }
     </div>
+
 </EditForm>
 
 
@@ -113,6 +114,7 @@
             Encontrado = true;
 
     }
+
     public void Guardar()
     {
 
@@ -126,18 +128,21 @@
         Nuevo();
 
     }
+
     public void Nuevo()
     {
         this.cliente = new Clientes();
         nombreExistente = false;
         rncExistente = false;
     }
+
     public bool Validar()
     {
         nombreExistente = clientesBLL.Listar(c => c.Nombres == cliente.Nombres && ClienteId != cliente.ClienteId).Any();
         rncExistente = clientesBLL.Listar(c => c.Rnc == cliente.Rnc && ClienteId != cliente.ClienteId).Any();
         return nombreExistente || rncExistente;
     }
+
     public async void Eliminar()
     {
         if (cliente.ClienteId > 0)

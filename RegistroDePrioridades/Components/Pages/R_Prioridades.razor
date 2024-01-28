@@ -1,4 +1,5 @@
-﻿@page "/RegistroDePrioridades"
+﻿@page "/RegistrodePrioridades"
+@page "/RegistrodePrioridades/{prioridadId:int}"
 @inject PrioridadesService prioridadesBLL
 @rendermode InteractiveServer
 
@@ -51,10 +52,14 @@
                     </p>
                 }
             </div>
-            <div class="card-footer d-flex justify-content-center align-items-center">
-                <button type="submit" class="btn btn-success">
-                    Crear <i class="bi bi-file-earmark" />
-                </button>
+            <div class="card-footer d-flex justify-content-between">
+                <a href="javascript:void(0);" class="btn-link" @onclick="() => Guardar()">
+                    <span>Crear <i class="bi bi-file-earmark" /></span>
+                </a>
+                <a href="/ConsultaDePrioridades" class="btn-link">
+                    <span>Volver a Consulta</span>
+                </a>
+
                
             </div>
         </div>
@@ -62,12 +67,23 @@
 </EditForm>
 
 @code {
+    [Parameter]
+    public int? prioridadId { get; set; }
     public Prioridades Prioridad { get; set; } = new Prioridades();
     public string Mensaje { get; set; } = string.Empty;
     public bool Existe { get; set; } = false;
     public bool Guardo { get; set; } = false;
     public bool Elimino { get; set; } = false;
     public bool Encontro { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        if (prioridadId.HasValue)
+        {
+            Prioridad.PrioridadId = prioridadId.Value;
+            Buscar();
+        }
+    }
 
     public async Task Buscar()
     {
@@ -77,6 +93,7 @@
 
         Encontro = true;
     }
+
     public void Guardar()
     {
         if (Validar())
@@ -87,16 +104,19 @@
         Nuevo();
 
     }
+
     public void Nuevo()
     {
         this.Prioridad = new Prioridades();
         Mensaje = string.Empty;
     }
+
     public bool Validar()
     {
         Existe = (prioridadesBLL.Listar(pr => pr.Descripcion!.ToLower() == Prioridad.Descripcion!.ToLower() && pr.PrioridadId != Prioridad.PrioridadId).Any());
         return Existe;
     }
+
     public async Task Eliminar()
     {
         var eliminado = prioridadesBLL.Eliminar(Prioridad.PrioridadId);
