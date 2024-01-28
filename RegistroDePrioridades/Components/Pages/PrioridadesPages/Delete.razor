@@ -1,0 +1,74 @@
+﻿@page "/Delete/{prioridadId:int}"
+@inject PrioridadesService prioridadesService
+@inject NavigationManager navigationManager
+
+@rendermode InteractiveServer
+
+<h3>Detalles de Prioridad</h3>
+
+@if (Prioridad != null)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Detalles de Prioridad</h5>
+            <dl class="row">
+                <dt class="col-sm-3">PrioridadId:</dt>
+                <dd class="col-sm-9">@Prioridad.Result?.PrioridadId</dd>
+
+                <dt class="col-sm-3">Descripción:</dt>
+                <dd class="col-sm-9">@Prioridad.Result?.Descripcion</dd>
+
+                <dt class="col-sm-3">Días Compromiso:</dt>
+                <dd class="col-sm-9">@Prioridad.Result?.DiasCompromiso</dd>
+            </dl>
+            <button type="button"class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        </div>
+    </div>
+}
+else
+{
+    <p class="alert alert-danger">No se encontró la prioridad.</p>
+}
+
+<a href="/ConsultaDePrioridades" class="btn btn-link">Volver a Consulta</a>
+
+<style>
+    .card {
+        margin-top: 20px;
+    }
+
+    dl.row {
+        margin-top: 10px;
+    }
+
+    dt {
+        font-weight: bold;
+    }
+
+    .alert-danger {
+        margin-top: 20px;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int prioridadId { get; set; }
+
+    public Task<Prioridades?> Prioridad { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Prioridad = prioridadesService.Buscar(prioridadId);
+        await Prioridad;
+    }
+
+    public async Task Eliminar()
+    {
+        var prioridad = await Prioridad;
+        if (prioridad != null)
+        {
+            var eliminado = prioridadesService.Eliminar(prioridad.PrioridadId);
+            navigationManager.NavigateTo("Details");
+        }
+    }
+}
