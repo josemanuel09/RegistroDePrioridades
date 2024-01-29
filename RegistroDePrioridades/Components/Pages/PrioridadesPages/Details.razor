@@ -18,6 +18,8 @@
                 <th>PrioridadId</th>
                 <th>Descripcion</th>
                 <th>DiasCompromiso</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
 
 
             </tr>
@@ -31,8 +33,9 @@
                     <td>@item.DiasCompromiso</td>
                     <td>
                         <a href="/Edit/@item.PrioridadId"><i class="bi bi-pencil-square" /></a>
+                    </td>
+                    <td>
                         <a href="/Delete/@item.PrioridadId" class="link-danger"><i class="bi bi-trash" /></a>
-
                     </td>
 
                 </tr>
