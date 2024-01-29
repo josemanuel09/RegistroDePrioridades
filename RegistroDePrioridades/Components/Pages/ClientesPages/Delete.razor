@@ -1,0 +1,69 @@
+﻿@page "/DeleteCliente/{clienteId:int}"
+@inject ClientesService clientesService
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+
+@rendermode InteractiveServer
+
+<h3>Detalles de Cliente</h3>
+
+@if(Cliente != null)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Detalles de Cliente</h5>
+            <dl class="row">
+                <dt class="col-sm-3">ClienteId:</dt>
+                <dd class="col-sm-9">@Cliente.Result?.ClienteId</dd>
+
+                <dt class="col-sm-3">Nombres:</dt>
+                <dd class="col-sm-9">@Cliente.Result?.Nombres</dd>
+
+                <dt class="col-sm-3">Email:</dt>
+                <dd class="col-sm-9">@Cliente.Result?.Email</dd>
+
+                <dt class="col-sm-3">Rnc:</dt>
+                <dd class="col-sm-9">@Cliente.Result?.Rnc</dd>
+
+                <dt class="col-sm-3">Direccion:</dt>
+                <dd class="col-sm-9">@Cliente.Result?.Direccion</dd>
+
+                <dt class="col-sm-3">Celular:</dt>
+                <dd class="col-sm-9">@Cliente.Result?.Celular</dd>
+
+                <dt class="col-sm-3">Telefono:</dt>
+                <dd class="col-sm-9">@Cliente.Result?.Telefono</dd>
+            </dl>
+            <button type="button"class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <a href="/DetailsClientes" class="btn btn-link">Volver a Consulta</a>
+        </div>
+    </div>
+}
+else
+{
+    <p class="alert alert-danger">No se encontró el cliente.</p>
+}
+
+
+@code {
+    [Parameter]
+    public int clienteId { get; set; }
+
+    public Task<Clientes?> Cliente { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cliente = clientesService.Buscar(clienteId);
+        await Cliente;
+    }
+
+    public async Task Eliminar()
+    {
+        var cliente = await Cliente;
+        if (cliente != null)
+        {
+            await clientesService.Eliminar(cliente);
+            navigationManager.NavigateTo("DetailsClientes");
+        }
+    }
+}
