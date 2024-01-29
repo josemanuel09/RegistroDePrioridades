@@ -9,10 +9,13 @@ namespace RegistroDePrioridades.Models
         public int TicketId { get; set; }
         [Required(ErrorMessage = "El campo es obligatorio")]
         public DateTime Fecha { get; set; }
+        [Required(ErrorMessage = "El campo es obligatorio")]
         [ForeignKey("ClienteId")]
         public int ClienteId { get; set; }
+        [Required(ErrorMessage = "El campo es obligatorio")]
         [ForeignKey("SistemaId")]
         public int SistemaId { get; set; }
+        [Required(ErrorMessage = "El campo es obligatorio")]
         [ForeignKey("PrioridadId")]
         public int PrioridadId { get; set; }
         [Required(ErrorMessage = "El campo es obligatorio")]
