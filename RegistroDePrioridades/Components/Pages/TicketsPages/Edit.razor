@@ -42,7 +42,7 @@
                     <ValidationMessage For="@(() => ticket.Descripcion)" />
                 </div>
 
-                <!-- Nuevos campos para claves foráneas -->
+
                 <div class="mb-3">
                     <label class="form-label" for="ClienteId">Cliente Id:</label>
                     <InputNumber @bind-Value="ticket.ClienteId" class="form-control" />
@@ -59,8 +59,8 @@
                     <InputNumber @bind-Value="ticket.SistemaId" class="form-control" />
                     <ValidationMessage For="@(() => ticket.SistemaId)" />
                 </div>
-                <!-- Fin de nuevos campos -->
-                <!-- Agregar más campos según sea necesario -->
+
+
                 @if (Existe)
                 {
                     <div class="alert alert-danger" role="alert">

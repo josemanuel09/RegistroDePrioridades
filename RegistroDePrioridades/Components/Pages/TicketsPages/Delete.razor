@@ -10,38 +10,38 @@
 
 @if (Ticket != null)
 {
-   
-        <div class="card-body">
-            <h5 class="card-title">Detalles de Ticket</h5>
-            <dl class="row">
-                <dt class="col-sm-3">TicketId:</dt>
-                <dd class="col-sm-9">@Ticket.Result?.TicketId</dd>
 
-                <dt class="col-sm-3">Fecha:</dt>
-                <dd class="col-sm-9">@Ticket.Result?.Fecha.ToShortDateString()</dd>
+    <div class="card-body">
+        <h5 class="card-title">Detalles de Ticket</h5>
+        <dl class="row">
+            <dt class="col-sm-3">TicketId:</dt>
+            <dd class="col-sm-9">@Ticket.Result?.TicketId</dd>
 
-                <dt class="col-sm-3">Solicitado Por:</dt>
-                <dd class="col-sm-9">@Ticket.Result?.SolicitadoPor</dd>
+            <dt class="col-sm-3">Fecha:</dt>
+            <dd class="col-sm-9">@Ticket.Result?.Fecha.ToShortDateString()</dd>
 
-                <dt class="col-sm-3">Asunto:</dt>
-                <dd class="col-sm-9">@Ticket.Result?.Asunto</dd>
+            <dt class="col-sm-3">Solicitado Por:</dt>
+            <dd class="col-sm-9">@Ticket.Result?.SolicitadoPor</dd>
 
-                <dt class="col-sm-3">Descripción:</dt>
-                <dd class="col-sm-9">@Ticket.Result?.Descripcion</dd>
+            <dt class="col-sm-3">Asunto:</dt>
+            <dd class="col-sm-9">@Ticket.Result?.Asunto</dd>
 
-                <dt class="col-sm-3">Cliente Id:</dt>
-                <dd class="col-sm-9">@Ticket.Result?.ClienteId</dd>
+            <dt class="col-sm-3">Descripción:</dt>
+            <dd class="col-sm-9">@Ticket.Result?.Descripcion</dd>
 
-                <dt class="col-sm-3">Prioridad Id:</dt>
-                <dd class="col-sm-9">@Ticket.Result?.PrioridadId</dd>
+            <dt class="col-sm-3">Cliente Id:</dt>
+            <dd class="col-sm-9">@Ticket.Result?.ClienteId</dd>
 
-                <dt class="col-sm-3">Sistema Id:</dt>
-                <dd class="col-sm-9">@Ticket.Result?.SistemaId</dd>
-            </dl>
-            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-            <a href="/DetailsTicket" class="btn btn-link">Volver a Consulta</a>
-        </div>
-    
+            <dt class="col-sm-3">Prioridad Id:</dt>
+            <dd class="col-sm-9">@Ticket.Result?.PrioridadId</dd>
+
+            <dt class="col-sm-3">Sistema Id:</dt>
+            <dd class="col-sm-9">@Ticket.Result?.SistemaId</dd>
+        </dl>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <a href="/DetailsTicket" class="btn btn-link">Volver a Consulta</a>
+    </div>
+
 }
 else
 {

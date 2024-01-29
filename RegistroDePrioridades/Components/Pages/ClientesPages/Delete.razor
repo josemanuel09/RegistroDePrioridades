@@ -7,7 +7,7 @@
 
 <h3>Eliminar Cliente</h3>
 
-@if(Cliente != null)
+@if (Cliente != null)
 {
     <div class="card">
         <div class="card-body">
@@ -34,7 +34,7 @@
                 <dt class="col-sm-3">Telefono:</dt>
                 <dd class="col-sm-9">@Cliente.Result?.Telefono</dd>
             </dl>
-            <button type="button"class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
             <a href="/DetailsClientes" class="btn btn-link">Volver a Consulta</a>
         </div>
     </div>
