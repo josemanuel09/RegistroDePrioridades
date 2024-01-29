@@ -1,0 +1,112 @@
+﻿@page "/CreateSistema"
+@page "/CreateSistema/{SistemaId:int}"
+@inject SistemasService sistemasService
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@rendermode InteractiveServer
+
+<EditForm Model="sistema" OnValidSubmit="Guardar" FormName="sistemaForm">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h3>Crear Sistema</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                        <label for="SistemaId">Sistema Id:</label>
+                        <div class="id-input">
+                            <InputNumber @bind-Value="sistema.SistemaId" class="form-control" aria-describedby="BotonBuscar" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="NombreSistema">Nombre del Sistema:</label>
+                    <InputText @bind-Value="sistema.NombreSistema" class="form-control" />
+                    <ValidationMessage For="@(() => sistema.NombreSistema)" />
+                </div>
+                @if (Existe)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Ya existe un sistema con ese nombre
+                    </div>
+                }
+                @if (Guardo)
+                {
+                    <p class="text-success">
+                        El sistema se guardó exitosamente
+                    </p>
+                }
+                @if (Elimino)
+                {
+                    <p class="text-success">
+                        El sistema se eliminó exitosamente
+                    </p>
+                }
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-primary" @onclick="() => Guardar()">
+                    <span>Crear <i class="bi bi-file-earmark" /></span>
+                </button>
+                <a href="/DetailSistemas" class="btn btn-secondary">
+                    <span>Volver a Consulta</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? SistemaId { get; set; }
+    public Sistemas sistema { get; set; } = new Sistemas();
+    public bool Existe { get; set; } = false;
+    public bool Guardo { get; set; } = false;
+    public bool Elimino { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        if (SistemaId.HasValue)
+        {
+            sistema.SistemaId = SistemaId.Value;
+            Buscar();
+        }
+    }
+
+    public async Task Buscar()
+    {
+        var encontrado = await sistemasService.Buscar(sistema.SistemaId);
+        if (encontrado != null)
+            sistema = encontrado;
+    }
+
+    public void Guardar()
+    {
+        if (Validar())
+            return;
+
+        var guardo = sistemasService.Guardar(sistema);
+        Guardo = true;
+        navigationManager.NavigateTo("DetailSistemas");
+        Nuevo();
+    }
+
+    public void Nuevo()
+    {
+        this.sistema = new Sistemas();
+    }
+
+    public bool Validar()
+    {
+        Existe = (sistemasService.Listar(pr => pr.NombreSistema!.ToLower() == sistema.NombreSistema!.ToLower() && pr.SistemaId != sistema.SistemaId).Any());
+        return Existe;
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = await sistemasService.Eliminar(sistema);
+        Elimino = true;
+        Nuevo();
+    }
+}
