@@ -16,6 +16,7 @@ namespace RegistroDePrioridades
             builder.Services.AddScoped<PrioridadesService>();
             builder.Services.AddScoped<ClientesService>();
             builder.Services.AddScoped<TicketsService>();
+            builder.Services.AddScoped<SistemasService>();
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
