@@ -1,5 +1,8 @@
-﻿@page "/RegistroDeClientes"
+﻿@page "/CreateCliente"
+@page "/CreateCliente/{ClienteId:int}"
 @inject ClientesService clientesBLL
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
 @rendermode InteractiveServer
 
 <PageTitle>Registro de Clientes</PageTitle>
@@ -13,7 +16,6 @@
             <label>ClienteID:</label>
             <div class="id-input">
                 <InputNumber @bind-Value="cliente.ClienteId" class="id-input"></InputNumber>
-                <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="bi bi-search"></i> Buscar</button>
             </div>
             @if (Encontrado)
             {
@@ -68,13 +70,15 @@
 
 
         </div>
-        <div class="card-footer">
-            <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo <i class="bi bi-file-earmark-plus-fill" /></button>
-            <button  type="submit" class="btn btn-success" >
-                Guardar <i class="bi bi-archive-fill" />
+        <div class="card-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-primary" @onclick="() => Guardar()">
+                <span>Crear <i class="bi bi-file-earmark" /></span>
             </button>
-            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar <i class="bi bi-archive-fill" /></button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='/DetailsClientes'">
+                <span>Volver a Consulta</span> <i class="bi bi-arrow-return-left" />
+            </button>
         </div>
+
         @if (Eliminado)
         {
             <p class="text-success">Se elimino el cliente correctamente</p>
@@ -87,12 +91,15 @@
             <p class="text-success">Se guardo el cliente correctamente</p>
         }
     </div>
+
 </EditForm>
 
 
 @code {
-    public Clientes cliente { get; set; } = new Clientes();
+    [Parameter]
     public int ClienteId { get; set; }
+    public Clientes cliente { get; set; } = new Clientes();
+ 
 
     private bool nombreExistente = false;
     private bool rncExistente = false;
@@ -115,6 +122,7 @@
             Encontrado = true;
 
     }
+
     public void Guardar()
     {
 
@@ -128,18 +136,21 @@
         Nuevo();
 
     }
+
     public void Nuevo()
     {
         this.cliente = new Clientes();
         nombreExistente = false;
         rncExistente = false;
     }
+
     public bool Validar()
     {
         nombreExistente = clientesBLL.Listar(c => c.Nombres == cliente.Nombres && ClienteId != cliente.ClienteId).Any();
         rncExistente = clientesBLL.Listar(c => c.Rnc == cliente.Rnc && ClienteId != cliente.ClienteId).Any();
         return nombreExistente || rncExistente;
     }
+
     public async void Eliminar()
     {
         if (cliente.ClienteId > 0)

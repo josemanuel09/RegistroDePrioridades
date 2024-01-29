@@ -1,0 +1,87 @@
+﻿@page "/DetailsTicket"
+@page "/DetailsTicket/{TicketId:int}"
+@inject TicketsService ticketsService
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@rendermode InteractiveServer
+
+<h3>Detalle de Tickets</h3>
+<a href="CreateTicket" class="btn-link" @onclick="Nuevo">
+    <span>Agregar un Nuevo Ticket <i class="bi bi-file-earmark-plus-fill"></i></span>
+</a>
+
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr bgcolor="6962AD">
+                    <th>TicketID</th>
+                    <th>Fecha</th>
+                    <th>Solicitado Por</th>
+                    <th>Asunto</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>ClienteID</th> <!-- Nuevo campo -->
+                    <th>PrioridadID</th> <!-- Nuevo campo -->
+                    <th>SistemaID</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Lista_De_Tickets)
+                {
+                    <tr>
+                        <td>@ticket.TicketId</td>
+                        <td>@ticket.Fecha.ToShortDateString()</td>
+                        <td>@ticket.SolicitadoPor</td>
+                        <td>@ticket.Asunto</td>
+                        <td>@ticket.Descripcion</td>
+                        <td>@ticket.ClienteId</td> <!-- Nuevo campo -->
+                        <td>@ticket.PrioridadId</td> <!-- Nuevo campo -->
+                        <td>@ticket.SistemaId</td>
+                        <td>
+                            <a href="/EditTicket/@ticket.TicketId">
+                                <i class="bi bi-pencil-square" style="font-size: 1.5em;"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/DeleteTicket/@ticket.TicketId" class="link-danger">
+                                <i class="bi bi-trash" style="font-size: 1.5em;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int? TicketId { get; set; }
+    public Tickets ticket { get; set; } = new Tickets();
+    public List<Tickets> Lista_De_Tickets { get; set; } = new List<Tickets>();
+    public bool Encontrado { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        Lista_De_Tickets = ticketsService.Listar(lt => true);
+    }
+
+    public void Buscar()
+    {
+        if (Lista_De_Tickets.Count == 0)
+        {
+            Encontrado = false;
+        }
+        else
+        {
+            Encontrado = true;
+        }
+    }
+
+    public void Nuevo()
+    {
+        this.ticket = new Tickets();
+    }
+}

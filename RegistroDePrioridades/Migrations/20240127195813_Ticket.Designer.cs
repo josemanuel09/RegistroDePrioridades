@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RegistroDePrioridades.DAL;
 
@@ -10,9 +11,11 @@ using RegistroDePrioridades.DAL;
 namespace RegistroDePrioridades.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20240127195813_Ticket")]
+    partial class Ticket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
@@ -73,21 +76,6 @@ namespace RegistroDePrioridades.Migrations
                     b.HasKey("PrioridadId");
 
                     b.ToTable("Prioridades");
-                });
-
-            modelBuilder.Entity("RegistroDePrioridades.Models.Sistemas", b =>
-                {
-                    b.Property<int>("SistemaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("NombreSistema")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("SistemaId");
-
-                    b.ToTable("Sistemas");
                 });
 
             modelBuilder.Entity("RegistroDePrioridades.Models.Tickets", b =>

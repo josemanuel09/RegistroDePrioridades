@@ -1,0 +1,53 @@
+﻿@page "/DeleteSistema"
+@page "/DeleteSistema/{sistemaId:int}"
+@inject SistemasService sistemasService
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@rendermode InteractiveServer
+
+<h3>Eliminar Sistema</h3>
+
+@if (Sistema != null)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Detalles de Sistema</h5>
+            <dl class="row">
+                <dt class="col-sm-3">SistemaId:</dt>
+                <dd class="col-sm-9">@Sistema.Result?.SistemaId</dd>
+
+                <dt class="col-sm-3">Nombre del Sistema:</dt>
+                <dd class="col-sm-9">@Sistema.Result?.NombreSistema</dd>
+            </dl>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <a href="/DetailSistemas" class="btn btn-link">Volver a Consulta</a>
+        </div>
+    </div>
+}
+else
+{
+    <p class="alert alert-danger">No se encontró el sistema.</p>
+}
+
+@code {
+    [Parameter]
+    public int sistemaId { get; set; }
+
+    public Task<Sistemas?> Sistema { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Sistema = sistemasService.Buscar(sistemaId);
+        await Sistema;
+    }
+
+    public async Task Eliminar()
+    {
+        var sistema = await Sistema;
+        if (sistema != null)
+        {
+            await sistemasService.Eliminar(sistema);
+            navigationManager.NavigateTo("DetailSistemas");
+        }
+    }
+}

@@ -1,0 +1,87 @@
+﻿@page "/Details"
+@page "/Details/{PrioridadId:int}"
+@inject PrioridadesService prioridadesService
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@rendermode InteractiveServer
+
+
+<h3>Detalle de Prioridades</h3>
+
+<a href="Create" class="btn-link" @onclick="() => Nuevo()">
+    <span>Agregar Nueva Prioridad <i class="bi bi-file-earmark-plus-fill" /></span>
+</a>
+
+
+<div class="table-responsive mt-3">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr bgcolor="#6962AD">
+                <th>PrioridadId</th>
+                <th>Descripci&oacute;n</th>
+                <th>D&iacute;asCompromiso</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Lista_De_Prioridades)
+            {
+                <tr>
+                    <td>@item.PrioridadId</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.DiasCompromiso</td>
+                    <td>
+                        <a href="/Edit/@item.PrioridadId">
+                            <i class="bi bi-pencil-square"style="font-size: 1.5em;"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/Delete/@item.PrioridadId" class="link-danger">
+                            <i class="bi bi-trash" style="font-size: 1.5em;"></i>
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    [Parameter]
+    public int PrioridadId { get; set; }
+    public Prioridades prioridad { get; set; } = new Prioridades();
+    public int filtro { get; set; }
+    public List<Prioridades> Lista_De_Prioridades { get; set; } = new List<Prioridades>();
+    public bool Encontrado { get; set; } = false;
+
+
+    protected override void OnInitialized()
+    {
+        Lista_De_Prioridades = prioridadesService.Listar(lp => true);
+
+    }
+    public void Buscar()
+    {
+        Lista_De_Prioridades = prioridadesService.Listar(lp => lp.PrioridadId == filtro);
+        if (Lista_De_Prioridades.Count == 0)
+        {
+            Encontrado = true;
+        }
+        else
+        {
+            Encontrado = false;
+        }
+    }
+
+    public void Nuevo()
+    {
+        Lista_De_Prioridades = prioridadesService.Listar(lp => true);
+    }
+
+
+}
