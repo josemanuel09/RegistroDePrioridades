@@ -1,6 +1,9 @@
 ﻿@page "/CreateTicket"
 @page "/CreateTicket/{TicketId:int}"
 @inject TicketsService ticketsService
+@inject SistemasService sistemasService
+@inject PrioridadesService prioridadesService
+@inject ClientesService clientesService
 @inject NavigationManager navigationManager
 @inject IJSRuntime jsRuntime
 @rendermode InteractiveServer
@@ -21,44 +24,58 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="col-md-3">
                     <label class="form-label" for="Fecha">Fecha:</label>
                     <InputDate @bind-Value="ticket.Fecha" class="form-control" />
                     <ValidationMessage For="@(() => ticket.Fecha)" />
                 </div>
-                <div class="mb-3">
+                <div class="col-md-3">
                     <label class="form-label" for="SolicitadoPor">Solicitado Por:</label>
                     <InputText @bind-Value="ticket.SolicitadoPor" class="form-control" />
                     <ValidationMessage For="@(() => ticket.SolicitadoPor)" />
                 </div>
-                <div class="mb-3">
+                <div class="col-md-3">
                     <label class="form-label" for="Asunto">Asunto:</label>
                     <InputText @bind-Value="ticket.Asunto" class="form-control" />
                     <ValidationMessage For="@(() => ticket.Asunto)" />
                 </div>
-                <div class="mb-3">
+                <div class="col-md-3">
                     <label class="form-label" for="Descripcion">Descripci&oacute;n:</label>
                     <InputText @bind-Value="ticket.Descripcion" class="form-control" />
                     <ValidationMessage For="@(() => ticket.Descripcion)" />
                 </div>
 
                 
-                <div class="mb-3">
+                <div class="col-md-3">
                     <label class="form-label" for="ClienteId">Cliente Id:</label>
                     <InputNumber @bind-Value="ticket.ClienteId" class="form-control" />
                     <ValidationMessage For="@(() => ticket.ClienteId)" />
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label" for="PrioridadId">Prioridad Id:</label>
-                    <InputNumber @bind-Value="ticket.PrioridadId" class="form-control" />
-                    <ValidationMessage For="@(() => ticket.PrioridadId)" />
+                <div class="col-md-3">
+                    <label>Cliente:</label>
+                    <InputSelect @bind-Value="ticket.ClienteId" class="form-control">
+                        <option value="0">Seleccione un cliente</option>
+                        @foreach (var herramienta in Lista_De_Clientes)
+                        {
+                            <option value="@herramienta.ClienteId">@herramienta.Nombres</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => ticket.ClienteId)" />
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="SistemaId">Sistema Id:</label>
-                    <InputNumber @bind-Value="ticket.SistemaId" class="form-control" />
+
+                <div class="col-md-3">
+                    <label>Sistema:</label>
+                    <InputSelect @bind-Value="ticket.SistemaId" class="form-control">
+                        <option value="0">Seleccione un sistema</option>
+                        @foreach (var herramienta in Lista_De_Sistemas)
+                        {
+                            <option value="@herramienta.SistemaId">@herramienta.NombreSistema</option>
+                        }
+                    </InputSelect>
                     <ValidationMessage For="@(() => ticket.SistemaId)" />
                 </div>
+
                
                 @if (Existe)
                 {
@@ -80,7 +97,7 @@
                 }
             </div>
             <div class="card-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-primary" @onclick="() => Guardar()">
+                <button type="submit" class="btn btn-primary">
                     <span>Crear <i class="bi bi-file-earmark" /></span>
                 </button>
                 <a href="/DetailsTicket" class="btn btn-secondary">
@@ -95,7 +112,11 @@
     [Parameter]
     public int? TicketId { get; set; }
     public Tickets ticket { get; set; } = new Tickets();
+    public List<Clientes> Lista_De_Clientes { get; set; } = new List<Clientes>();
+    public List<Sistemas> Lista_De_Sistemas { get; set; } = new List<Sistemas>();
+    public List<Prioridades> Lista_De_Prioridades { get; set; } = new List<Prioridades>();
     public string Mensaje { get; set; } = string.Empty;
+
     public bool Existe { get; set; } = false;
     public bool Guardo { get; set; } = false;
     public bool Elimino { get; set; } = false;
@@ -103,12 +124,16 @@
 
     protected override void OnInitialized()
     {
+        Lista_De_Clientes =  clientesService.Listar(t => true);
+        Lista_De_Sistemas = sistemasService.Listar(t => true);
+        Lista_De_Prioridades = prioridadesService.Listar(t => true);
         if (TicketId.HasValue)
         {
             ticket.TicketId = TicketId.Value;
-            Buscar();
+             Buscar();
         }
     }
+
 
     public async Task Buscar()
     {
