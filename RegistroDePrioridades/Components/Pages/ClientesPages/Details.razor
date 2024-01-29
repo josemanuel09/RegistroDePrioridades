@@ -16,7 +16,7 @@
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
-                <tr>
+                <tr bgcolor="6962AD">
                     <th>ClienteID</th>
                     <th>Email</th>
                     <th>Nombres</th>
@@ -40,11 +40,15 @@
                         <td>@herramienta.Direccion</td>
                         <td>@herramienta.Rnc</td>
                         <td>
-                            <a href="/EditCliente/@herramienta.ClienteId"><i class="bi bi-pencil-square" /></a>
-
+                            <a href="/EditCliente/@herramienta.ClienteId">
+                                <i class="bi bi-pencil-square" style="font-size: 1.5em;"></i>
+                            </a>
                         </td>
+
                         <td>
-                            <a href="/DeleteCliente/@herramienta.ClienteId" class="link-danger"><i class="bi bi-trash" /></a>
+                            <a href="/DeleteCliente/@herramienta." class="link-danger">
+                                <i class="bi bi-trash" style="font-size: 1.5em;"></i>
+                            </a>
 
                         </td>
                     </tr>

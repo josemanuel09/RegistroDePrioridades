@@ -70,14 +70,15 @@
 
 
         </div>
-        <div class="card-footer d-flex justify-content-between ">
-            <a href="javascript:void(0);" class="btn-link" @onclick="() => Guardar()">
-                <span>Modificar <i class="bi bi-file-earmark" /></span>
-            </a>
-            <a href="/DetailsClientes" class="btn-link">
-                <span>Volver a Consulta</span>
-            </a>
-        </div>
+        <div class="card-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-primary" @onclick="() => Guardar()">
+        <span>Modificar <i class="bi bi-file-earmark" /></span>
+    </button>
+    <a href="/DetailsClientes" class="btn btn-secondary">
+        <span>Volver a Consulta</span> <i class="bi bi-arrow-return-left" />
+    </a>
+</div>
+
         @if (Eliminado)
         {
             <p class="text-success">Se elimino el cliente correctamente</p>
