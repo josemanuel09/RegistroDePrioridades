@@ -1,0 +1,157 @@
+﻿@page "/EditTicket"
+@page "/EditTicket/{TicketId:int}"
+@inject TicketsService ticketsService
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@rendermode InteractiveServer
+
+<EditForm Model="ticket" OnValidSubmit="Guardar" FormName="ticketForm">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h3>Crear Tickets</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                        <label for="TicketId">Ticket Id:</label>
+                        <div class="id-input">
+                            <InputNumber @bind-Value="ticket.TicketId" class="form-control" aria-describedby="BotonBuscar" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="Fecha">Fecha:</label>
+                    <InputDate @bind-Value="ticket.Fecha" class="form-control" />
+                    <ValidationMessage For="@(() => ticket.Fecha)" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="SolicitadoPor">Solicitado Por:</label>
+                    <InputText @bind-Value="ticket.SolicitadoPor" class="form-control" />
+                    <ValidationMessage For="@(() => ticket.SolicitadoPor)" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="Asunto">Asunto:</label>
+                    <InputText @bind-Value="ticket.Asunto" class="form-control" />
+                    <ValidationMessage For="@(() => ticket.Asunto)" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="Descripcion">Descripción:</label>
+                    <InputText @bind-Value="ticket.Descripcion" class="form-control" />
+                    <ValidationMessage For="@(() => ticket.Descripcion)" />
+                </div>
+
+                <!-- Nuevos campos para claves foráneas -->
+                <div class="mb-3">
+                    <label class="form-label" for="ClienteId">Cliente Id:</label>
+                    <InputNumber @bind-Value="ticket.ClienteId" class="form-control" />
+                    <ValidationMessage For="@(() => ticket.ClienteId)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="PrioridadId">Prioridad Id:</label>
+                    <InputNumber @bind-Value="ticket.PrioridadId" class="form-control" />
+                    <ValidationMessage For="@(() => ticket.PrioridadId)" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="SistemaId">Sistema Id:</label>
+                    <InputNumber @bind-Value="ticket.SistemaId" class="form-control" />
+                    <ValidationMessage For="@(() => ticket.SistemaId)" />
+                </div>
+                <!-- Fin de nuevos campos -->
+                <!-- Agregar más campos según sea necesario -->
+                @if (Existe)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Ya existe un ticket con esa descripción
+                    </div>
+                }
+                @if (Guardo)
+                {
+                    <p class="text-success">
+                        El ticket se guardó exitosamente
+                    </p>
+                }
+                @if (Elimino)
+                {
+                    <p class="text-success">
+                        El ticket se eliminó exitosamente
+                    </p>
+                }
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-primary" @onclick="() => Guardar()">
+                    <span>Modificar <i class="bi bi-file-earmark" /></span>
+                </button>
+                <a href="/DetailsTicket" class="btn btn-secondary">
+                    <span>Volver a Consulta</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public int? TicketId { get; set; }
+    public Tickets ticket { get; set; } = new Tickets();
+    public string Mensaje { get; set; } = string.Empty;
+    public bool Existe { get; set; } = false;
+    public bool Guardo { get; set; } = false;
+    public bool Elimino { get; set; } = false;
+    public bool Encontro { get; set; } = false;
+
+    protected override void OnInitialized()
+    {
+        if (TicketId.HasValue)
+        {
+            ticket.TicketId = TicketId.Value;
+            Buscar();
+        }
+    }
+
+    public async Task Buscar()
+    {
+        var encontrado = await ticketsService.Buscar(ticket.TicketId);
+        if (encontrado != null)
+            ticket = encontrado;
+
+        Encontro = true;
+    }
+
+    public void Guardar()
+    {
+        if (Validar())
+            return;
+
+        var guardo = ticketsService.Guardar(this.ticket);
+        Guardo = true;
+        navigationManager.NavigateTo("DetailsTicket");
+        Nuevo();
+
+    }
+
+    public void Nuevo()
+    {
+        this.ticket = new Tickets();
+        Mensaje = string.Empty;
+    }
+
+    public bool Validar()
+    {
+        Existe = (ticketsService.Listar(pr => pr.Descripcion!.ToLower() == ticket.Descripcion!.ToLower() && pr.TicketId != ticket.TicketId).Any());
+        return Existe;
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = await ticketsService.Eliminar(ticket);
+        Elimino = true;
+        Nuevo();
+    }
+
+
+}
