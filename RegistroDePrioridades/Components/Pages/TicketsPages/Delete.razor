@@ -41,6 +41,10 @@
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
         <a href="/DetailsTicket" class="btn btn-link">Volver a Consulta</a>
     </div>
+    @if(Elimino)
+    {
+        <p class="text-success">El ticket se eliminó exitosamente</p>
+    }
 
 }
 else
@@ -53,6 +57,7 @@ else
     public int ticketId { get; set; }
 
     public Task<Tickets?> Ticket { get; set; }
+    public bool Elimino { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -67,6 +72,8 @@ else
         {
             await ticketsService.Eliminar(ticket);
             navigationManager.NavigateTo("DetailsTicket");
+            Elimino = true;
         }
+        
     }
 }

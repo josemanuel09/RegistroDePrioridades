@@ -13,7 +13,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-header">
-                <h3>Crear Tickets</h3>
+                <h3>Editar Tickets</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" for="Fecha">Fecha:</label>
-                    <InputDate @bind-Value="ticket.Fecha" class="form-control" />
+                    <InputDate @bind-Value="ticket.Fecha" class="form-control" format="yyyy-MM-ddTHH:mm" />
                     <ValidationMessage For="@(() => ticket.Fecha)" />
                 </div>
                 <div class="col-md-3">
@@ -62,6 +62,18 @@
                         }
                     </InputSelect>
                     <ValidationMessage For="@(() => ticket.ClienteId)" />
+                </div>
+
+                <div class="col-md-3">
+                    <label>PrioridadId:</label>
+                    <InputSelect @bind-Value="ticket.PrioridadId" class="form-control">
+                        <option value="0">Seleccione una Prioridad</option>
+                        @foreach (var herramienta in Lista_De_Prioridades)
+                        {
+                            <option value="@herramienta.PrioridadId">@herramienta.PrioridadId</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => ticket.PrioridadId)" />
                 </div>
 
                 <div class="col-md-3">

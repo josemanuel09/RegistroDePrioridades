@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" for="Fecha">Fecha:</label>
-                    <InputDate @bind-Value="ticket.Fecha" class="form-control" />
+                    <InputDate @bind-Value="ticket.Fecha" class="form-control" format="yyyy-MM-ddTHH:mm" />
                     <ValidationMessage For="@(() => ticket.Fecha)" />
                 </div>
                 <div class="col-md-3">
@@ -45,7 +45,7 @@
                     <ValidationMessage For="@(() => ticket.Descripcion)" />
                 </div>
 
-                
+
                 <div class="col-md-3">
                     <label class="form-label" for="ClienteId">Cliente Id:</label>
                     <InputNumber @bind-Value="ticket.ClienteId" class="form-control" />
@@ -63,6 +63,17 @@
                     </InputSelect>
                     <ValidationMessage For="@(() => ticket.ClienteId)" />
                 </div>
+                <div class="col-md-3">
+                    <label>PrioridadId:</label>
+                    <InputSelect @bind-Value="ticket.PrioridadId" class="form-control">
+                        <option value="0">Seleccione una Prioridad</option>
+                        @foreach (var herramienta in Lista_De_Prioridades)
+                        {
+                            <option value="@herramienta.PrioridadId">@herramienta.PrioridadId</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => ticket.PrioridadId)" />
+                </div>
 
                 <div class="col-md-3">
                     <label>Sistema:</label>
@@ -76,7 +87,7 @@
                     <ValidationMessage For="@(() => ticket.SistemaId)" />
                 </div>
 
-               
+
                 @if (Existe)
                 {
                     <div class="alert alert-danger" role="alert">
@@ -124,13 +135,13 @@
 
     protected override void OnInitialized()
     {
-        Lista_De_Clientes =  clientesService.Listar(t => true);
+        Lista_De_Clientes = clientesService.Listar(t => true);
         Lista_De_Sistemas = sistemasService.Listar(t => true);
         Lista_De_Prioridades = prioridadesService.Listar(t => true);
         if (TicketId.HasValue)
         {
             ticket.TicketId = TicketId.Value;
-             Buscar();
+            Buscar();
         }
     }
 
